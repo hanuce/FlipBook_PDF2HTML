@@ -14,7 +14,7 @@
 
 Bu bağımsız html sayfası, standart PDF dosyalarını, gerçek bir kitap veya dergi gibi sayfa çevirme efektine sahip, akıcı ve modern dijital flipbook'lara dönüştürmek için tasarlanmıştır. Tamamen tarayıcı üzerinde (yerel bilgisayarınızda) çalışır ve sonuç olarak her yerde paylaşılabilen, kendi kendine yeten tek bir `.html` dosyası üretir.
 
-This standalon html page is designed to convert standard PDF files into fluid, modern digital flipbooks with a realistic page-turning effect, just like a real book or magazine. It runs entirely in the browser (locally) and produces a single, self-contained `.html` file that can be shared and viewed anywhere.
+This standalone html page is designed to convert standard PDF files into fluid, modern digital flipbooks with a realistic page-turning effect, just like a real book or magazine. It runs entirely in the browser (locally) and produces a single, self-contained `.html` file that can be shared and viewed anywhere.
 
 ## Özellikler / Features
 
