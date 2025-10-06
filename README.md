@@ -43,13 +43,11 @@ This standalone html page is designed to convert standard PDF files into fluid, 
 2. Bu sebeple internet bağlantısı gerektirir.
 3. HTML etiketlerinde düzenleme yaparak gerekli dosyaları ekelemeniz halinde tamamen internetsiz olarak çalışabilir.
 4. Bahsedilen etiketler:
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js'
+```<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>``` and ```pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js'```
 
 ---
 1. PDF processings has been making with [PDF.JS](https://mozilla.github.io/pdf.js/), which licensed under Apache 2.0.
 2. Therefore, an internet connection is required.
 3. By editing the html-tags and adding the necessary files, it can work completely offline.
 4. The html-tags mentioned are as follows:
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js'
+```<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>``` and ```pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js'```
