@@ -34,5 +34,5 @@ This standalone html page is designed to convert standard PDF files into fluid, 
 1. `index.html` dosyasını tarayıcınızda açın. / Open the `index.html` file in your browser.
 2. "PDF Dosyası Seç" butonuna tıklayarak bilgisayarınızdan bir PDF seçin. / Click the “Select PDF File” button and choose a PDF from your computer.
 3. Dosyanın işlenmesini bekleyin ve "Flipbook Oluştur" butonuna tıklayın.
-4. Flipbook'unuz yeni bir sekmede açılacaktır. Keyfini çıkarın! / Wait for the file to process and click the “Create Flipbook” button.
+4. Flipbook'unuz yeni bir sekmede açılacaktır. / Wait for the file to process and click the “Create Flipbook” button.
 5. Oluşturduğunuz flipbook'u kaydetmek için alttaki "İndir" butonunu kullanabilirsiniz. / To save the flipbook you created, you can use the “Download” button below.
