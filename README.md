@@ -19,8 +19,8 @@ This standalone html page is designed to convert standard PDF files into fluid, 
 ## Özellikler / Features
 
 - Sayfa sınırı yok. / No page limit.
-- İnternetsiz, yerel bilgisayarınızdan çalışır. PDF dosyalarınız güvende. / Works offline, directly on your computer.Your PDF's in secure.
-- Oluşturduğunuz flipbook'u html sayfası olarak indirebilirsiniz. Tekrar tekrar oluşturmanıza gerek yok. / You can download the flipbook you created as an HTML page. You don't need to create it again.
+- Yerel bilgisayarınızdan çalışır. PDF dosyalarınız güvende. / Works directly on your computer. Your PDF's in secure.
+- Oluşturduğunuz flipbook'u html sayfası olarak indirebilirsiniz (farklı kaydedebilirsiniz). Tekrar oluşturmanıza gerek yok. / You can download (save as) the flipbook you created as an HTML page. You don't need to create it again.
 
 ## Kullanım Alanları / Use Cases
 
@@ -36,3 +36,20 @@ This standalone html page is designed to convert standard PDF files into fluid, 
 3. Dosyanın işlenmesini bekleyin ve "Flipbook Oluştur" butonuna tıklayın.
 4. Flipbook'unuz yeni bir sekmede açılacaktır. / Wait for the file to process and click the “Create Flipbook” button.
 5. Oluşturduğunuz flipbook'u kaydetmek için alttaki "İndir" butonunu kullanabilirsiniz. / To save the flipbook you created, you can use the “Download” button below.
+
+## NOTLAR / NOTES
+---
+1. PDF işlemleri için Apache 2.0 altında lisanslı olan [PDF.JS ](https://mozilla.github.io/pdf.js/) kullanılmıştır.
+2. Bu sebeple internet bağlantısı gerektirir.
+3. HTML etiketlerinde düzenleme yaparak gerekli dosyaları ekelemeniz halinde tamamen internetsiz olarak çalışabilir.
+4. Bahsedilen etiketler:
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js'
+
+---
+1. PDF processings has been making with [PDF.JS](https://mozilla.github.io/pdf.js/), which licensed under Apache 2.0.
+2. Therefore, an internet connection is required.
+3. By editing the html-tags and adding the necessary files, it can work completely offline.
+4. The html-tags mentioned are as follows:
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js'
