@@ -1,12 +1,11 @@
 # PDF'den Etkileşimli Flipbook Oluşturucu / Interactive PDF to Flipbook Converter
-
-Tek bir HTML dosyası ile PDF'lerinizi modern, hızlı ve etkileşimli dijital yayınlara dönüştürün.
-Sunucuya veya karmaşık kütüphanelere gerek yok.
-Türkçe kullanım için flipbook_maker_TR.html sayfasını indirip kulanabilirsiniz.
+- Tek bir HTML dosyası ile PDF'lerinizi modern, hızlı ve etkileşimli dijital yayınlara dönüştürün.
+- Sunucuya veya karmaşık kütüphanelere gerek yok.
+- Türkçe kullanım için flipbook_maker_TR.html sayfasını indirip kulanabilirsiniz.
 ---
-Convert your PDFs into modern, fast, and interactive digital publications with a single HTML file. 
-No server or complex dependencies needed.
-You can download and use the flipbook_maker_EN.html page for English usage.
+- Convert your PDFs into modern, fast, and interactive digital publications with a single HTML file. 
+- No server or complex dependencies needed.
+- You can download and use the flipbook_maker_EN.html page for English usage.
 ---
 
 ![Local GIF](flipbook_maker_animation.gif)
