@@ -16,7 +16,7 @@ Bu bağımsız html sayfası, standart PDF dosyalarını, gerçek bir kitap veya
 
 This standalon html page is designed to convert standard PDF files into fluid, modern digital flipbooks with a realistic page-turning effect, just like a real book or magazine. It runs entirely in the browser (locally) and produces a single, self-contained `.html` file that can be shared and viewed anywhere.
 
-## Özellikler / Properties
+## Özellikler / Features
 
 - Sayfa sınırı yok. No page limit.
 - İnternetsiz, yerel bilgisayarınızdan çalışır. PDF dosyalarınız güvende. Works offline, directly on your computer.Your PDF's in secure.
@@ -29,7 +29,7 @@ This standalon html page is designed to convert standard PDF files into fluid, m
 - Ürün Broşürleri ve Kılavuzlar
 - Restoran Menüleri
 
-## Nasıl Kullanılır?
+## Nasıl Kullanılır? / How to Use
 
 1. `index.html` dosyasını tarayıcınızda açın. / Open the `index.html` file in your browser.
 2. "PDF Dosyası Seç" butonuna tıklayarak bilgisayarınızdan bir PDF seçin. / Click the “Select PDF File” button and choose a PDF from your computer.
