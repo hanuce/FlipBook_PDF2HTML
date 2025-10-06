@@ -18,16 +18,16 @@ This standalone html page is designed to convert standard PDF files into fluid, 
 
 ## Özellikler / Features
 
-- Sayfa sınırı yok. No page limit.
-- İnternetsiz, yerel bilgisayarınızdan çalışır. PDF dosyalarınız güvende. Works offline, directly on your computer.Your PDF's in secure.
-- Oluşturduğunuz flipbook'u html sayfası olarak indirebilirsiniz. Tekrar tekrar oluşturmanıza gerek yok. You can download the flipbook you created as an HTML page. You don't need to create it again and again.
+- Sayfa sınırı yok. / No page limit.
+- İnternetsiz, yerel bilgisayarınızdan çalışır. PDF dosyalarınız güvende. / Works offline, directly on your computer.Your PDF's in secure.
+- Oluşturduğunuz flipbook'u html sayfası olarak indirebilirsiniz. Tekrar tekrar oluşturmanıza gerek yok. / You can download the flipbook you created as an HTML page. You don't need to create it again.
 
 ## Kullanım Alanları / Use Cases
 
-- Dijital Dergiler ve Kataloglar
-- Eğitim Materyalleri ve E-Kitaplar
-- Ürün Broşürleri ve Kılavuzlar
-- Restoran Menüleri
+- Dijital Dergiler ve Kataloglar / Digital Magazines and Catalogs
+- Eğitim Materyalleri ve E-Kitaplar / Educational Materials and E-Books
+- Ürün Broşürleri ve Kılavuzlar / Product Brochures and Guides
+- Restoran Menüleri / Restaurant Menus
 
 ## Nasıl Kullanılır? / How to Use
 
