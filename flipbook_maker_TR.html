@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Dosyasından Flipbook HTML Oluşturma</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+    <style>
+        /* Ana Sayfa Stilleri */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f0f2f5; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; padding: 20px; box-sizing: border-box; }
+        .container { background-color: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); width: 100%; max-width: 500px; text-align: center; }
+        h1 { color: #333; margin-bottom: 30px; }
+        #upload-section { margin-bottom: 25px; }
+        #pdfFile { display: none; }
+        .file-label { display: inline-block; padding: 12px 20px; background-color: #007bff; color: white; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+        .file-label:hover { background-color: #0056b3; }
+        #file-name { margin-top: 15px; color: #555; font-style: italic; }
+        #createBtn { padding: 15px 30px; font-size: 18px; font-weight: bold; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; width: 100%; transition: background-color 0.3s ease; opacity: 0.5; pointer-events: none; }
+        #createBtn:not(:disabled) { opacity: 1; pointer-events: auto; }
+        #createBtn:hover:not(:disabled) { background-color: #218838; }
+        #status { margin-top: 20px; padding: 10px; border-radius: 5px; display: none; }
+        #status.loading { display: block; background-color: #e0f7fa; color: #00796b; }
+        #status.error { display: block; background-color: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>PDF'den HTML Flipbook Oluştur</h1>
+        <div id="upload-section">
+            <label for="pdfFile" class="file-label">PDF Dosyası Seç</label>
+            <input type="file" id="pdfFile" accept=".pdf">
+            <p id="file-name">Henüz dosya seçilmedi.</p>
+        </div>
+        <button id="createBtn" disabled>Oluştur</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js';
+        
+        const pdfFileInput = document.getElementById('pdfFile');
+        const createBtn = document.getElementById('createBtn');
+        const statusDiv = document.getElementById('status');
+        const fileNameSpan = document.getElementById('file-name');
+        let pageImageUrls = [];
+        pdfFileInput.addEventListener('change', async (event) => {
+            const file = event.target.files[0]; if (!file) return;
+            fileNameSpan.textContent = file.name; createBtn.disabled = true; createBtn.textContent = 'İşleniyor...';
+            statusDiv.className = 'loading'; statusDiv.textContent = 'PDF sayfaları resme dönüştürülüyor...'; pageImageUrls = [];
+            try {
+                const typedarray = new Uint8Array(await file.arrayBuffer());
+                const pdfDoc = await pdfjsLib.getDocument({ data: typedarray }).promise;
+                const numPages = pdfDoc.numPages; const scale = 2.0; const quality = 0.9;
+                for (let i = 1; i <= numPages; i++) {
+                    const page = await pdfDoc.getPage(i); const viewport = page.getViewport({ scale });
+                    const canvas = document.createElement('canvas'); canvas.height = viewport.height; canvas.width = viewport.width;
+                    const context = canvas.getContext('2d');
+                    await page.render({ canvasContext: context, viewport }).promise;
+                    pageImageUrls.push(canvas.toDataURL('image/jpeg', quality));
+                    page.cleanup(); statusDiv.textContent = `Sayfa ${i}/${numPages} işlendi...`;
+                }
+                statusDiv.style.display = 'none'; createBtn.disabled = false; createBtn.textContent = 'Flipbook Oluştur';
+            } catch (error) { console.error('PDF İşleme Hatası:', error); statusDiv.className = 'error'; statusDiv.textContent = `Hata: ${error.message}`; }
+        });
+        
+        createBtn.addEventListener('click', () => {
+            const flipbookWindow = window.open('', '_blank'); if (!flipbookWindow) { statusDiv.className = 'error'; statusDiv.textContent = 'Lütfen açılır pencerelere izin verin.'; return; }
+            flipbookWindow.document.write(generateFlipbookHTML(pageImageUrls));
+            flipbookWindow.document.close();
+        });
+        
+        function generateFlipbookHTML(imageUrls) {
+            const css = `
+                <style>
+                    :root { --turn-duration: 0.8s; }
+                    body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #333; font-family: sans-serif; }
+                    .page-wrapper { width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+                    .flipbook-viewport { flex-grow: 1; width: 100%; display: flex; justify-content: center; align-items: center; perspective: 2500px; overflow: hidden; }
+                    #zoom-container { transition: transform 0.3s ease; }
+                    #flipbook { 
+                        max-width: 95vw; max-height: 85vh;
+                        position: relative; display: flex; 
+                        box-shadow: 0 10px 40px rgba(0,0,0,0.4); 
+                        transform-style: preserve-3d; cursor: pointer;
+                    }
+                    .page-side { width: 50%; height: 100%; background-color: white; overflow: hidden; }
+                    .page-side img { width: 100%; height: 100%; object-fit: contain; }
+                    .page-side.left { border-radius: 8px 0 0 8px; }
+                    .page-side.right { border-radius: 0 8px 8px 0; }
+                    .turning-leaf { position: absolute; width: 50%; height: 100%; transform-style: preserve-3d; transition: transform var(--turn-duration) cubic-bezier(0.645, 0.045, 0.355, 1); z-index: 100; pointer-events: none; }
+                    .turning-leaf.forward { top: 0; left: 50%; transform-origin: left center; }
+                    .turning-leaf.forward.flipped { transform: rotateY(-180deg); }
+                    .turning-leaf.backward { top: 0; left: 0; transform-origin: right center; }
+                    .turning-leaf.backward.flipped { transform: rotateY(180deg); }
+                    .turning-leaf .page { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; background-color: white; overflow: hidden; }
+                    .turning-leaf .page img { width: 100%; height: 100%; object-fit: contain; }
+                    .turning-leaf .back { transform: rotateY(180deg); }
+                    .toolbar { flex-shrink: 0; padding: 20px 0; display: flex; justify-content: center; align-items: center; gap: 15px; width: 100%; }
+                    .toolbar button { background-color: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.2); color: white; padding: 10px 20px; cursor: pointer; border-radius: 8px; font-size: 16px; transition: all 0.2s ease; font-weight: bold; }
+                    .toolbar button:hover { background-color: rgba(0,0,0,0.8); transform: translateY(-2px); }
+                </style>
+            `;
+
+            const htmlBody = `
+                <div class="page-wrapper">
+                    <div class="flipbook-viewport">
+                        <div id="zoom-container">
+                            <div id="flipbook">
+                                <div class="page-side left" id="leftPage"></div>
+                                <div class="page-side right" id="rightPage"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toolbar">
+                        <button id="fullscreenBtn">Tam Ekran</button>
+                        <button id="prevBtn">◀</button>
+                        <button id="zoomOutBtn">-</button>
+                        <button id="zoomInBtn">+</button>
+                        <button id="nextBtn">▶</button>
+                        <button id="downloadBtn">İndir</button>
+                    </div>
+                </div>
+            `;
+
+            const js = `
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                        const pageImageUrls = ${JSON.stringify(imageUrls)};
+                        const flipbook = document.getElementById('flipbook');
+                        const leftPage = document.getElementById('leftPage');
+                        const rightPage = document.getElementById('rightPage');
+                        const zoomContainer = document.getElementById('zoom-container');
+
+                        let spreads = [];
+                        let currentSpread = 0;
+                        let isTurning = false;
+                        let pageAspectRatio = 16 / 9; // Varsayılan
+                        let currentZoom = 1.0;
+                        const MAX_ZOOM = 3.0;
+                        const MIN_ZOOM = 0.5;
+                        const ZOOM_STEP = 0.2;
+
+                        function prepareSpreads() {
+                            spreads.push([null, pageImageUrls[0]]);
+                            for (let i = 1; i < pageImageUrls.length; i += 2) {
+                                spreads.push([ pageImageUrls[i], (i + 1 < pageImageUrls.length) ? pageImageUrls[i + 1] : null ]);
+                            }
+                        }
+
+                        // *** SAYFA BOYUTU AYARLAMA ***
+                        function calculateAndSetAspectRatio() {
+                            if (!pageImageUrls[0]) return;
+                            const tempImg = new Image();
+                            tempImg.onload = () => {
+                                // 1. Tek bir sayfanın oranını hesapla
+                                pageAspectRatio = tempImg.naturalWidth / tempImg.naturalHeight;
+                                // 2. Flipbook'un oranını HER ZAMAN çift sayfa genişliğine göre ayarla
+                                flipbook.style.aspectRatio = 2 * pageAspectRatio;
+                                // 3. İçeriği bu doğru orana göre ilk kez doldur
+                                updateStaticPages();
+                            };
+                            tempImg.src = pageImageUrls[0];
+                        }
+
+                        function updateStaticPages() {
+                            const spread = spreads[currentSpread];
+                            if (!spread) return;
+                            leftPage.innerHTML = spread[0] ? \`<img src="\${spread[0]}">\` : '';
+                            rightPage.innerHTML = spread[1] ? \`<img src="\${spread[1]}">\` : '';
+                        }
+                        
+                        function turnPage(direction) {
+                            if (isTurning) return;
+                            const nextSpread = currentSpread + direction;
+                            if (nextSpread < 0 || nextSpread >= spreads.length) return;
+                            
+                            isTurning = true;
+                            const oldSpreadData = spreads[currentSpread];
+                            const nextSpreadData = spreads[nextSpread];
+                            const turningLeaf = document.createElement('div');
+                            turningLeaf.className = 'turning-leaf';
+                            const front = document.createElement('div');
+                            front.className = 'page front';
+                            const back = document.createElement('div');
+                            back.className = 'page back';
+
+                            if (direction > 0) { // İLERİ
+                                if (oldSpreadData[1]) front.innerHTML = \`<img src="\${oldSpreadData[1]}">\`;
+                                if (nextSpreadData[0]) back.innerHTML = \`<img src="\${nextSpreadData[0]}">\`;
+                                turningLeaf.classList.add('forward');
+                                leftPage.innerHTML = oldSpreadData[0] ? \`<img src="\${oldSpreadData[0]}">\` : '';
+                                rightPage.innerHTML = nextSpreadData[1] ? \`<img src="\${nextSpreadData[1]}">\` : '';
+                            } else { // GERİ
+                                if (oldSpreadData[0]) front.innerHTML = \`<img src="\${oldSpreadData[0]}">\`;
+                                if (nextSpreadData[1]) back.innerHTML = \`<img src="\${nextSpreadData[1]}">\`;
+                                turningLeaf.classList.add('backward');
+                                leftPage.innerHTML = nextSpreadData[0] ? \`<img src="\${nextSpreadData[0]}">\` : '';
+                                rightPage.innerHTML = oldSpreadData[1] ? \`<img src="\${oldSpreadData[1]}">\` : '';
+                            }
+
+                            turningLeaf.append(front, back);
+                            flipbook.appendChild(turningLeaf);
+                            
+                            requestAnimationFrame(() => turningLeaf.classList.add('flipped'));
+                            
+                            setTimeout(() => {
+                                currentSpread = nextSpread;
+                                updateStaticPages();
+                                turningLeaf.remove();
+                                isTurning = false;
+                            }, parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--turn-duration')) * 1000);
+                        }
+
+                        function applyZoom() { zoomContainer.style.transform = \`scale(\${currentZoom})\`; }
+                        function zoomIn() { if (currentZoom < MAX_ZOOM) { currentZoom = Math.min(MAX_ZOOM, currentZoom + ZOOM_STEP); applyZoom(); } }
+                        function zoomOut() { if (currentZoom > MIN_ZOOM) { currentZoom = Math.max(MIN_ZOOM, currentZoom - ZOOM_STEP); applyZoom(); } }
+
+                        function downloadSelf() {
+                            const pageSource = document.documentElement.outerHTML;
+                            const blob = new Blob([pageSource], { type: 'text/html' });
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a'); a.href = url; a.download = 'flipbook.html';
+                            document.body.appendChild(a); a.click();
+                            document.body.removeChild(a); URL.revokeObjectURL(url);
+                        }
+                        
+                        document.getElementById('nextBtn').addEventListener('click', () => turnPage(1));
+                        document.getElementById('prevBtn').addEventListener('click', () => turnPage(-1));
+                        document.getElementById('zoomInBtn').addEventListener('click', zoomIn);
+                        document.getElementById('zoomOutBtn').addEventListener('click', zoomOut);
+                        document.getElementById('downloadBtn').addEventListener('click', downloadSelf);
+                        flipbook.addEventListener('click', (e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            if (e.clientX > rect.left + rect.width / 2) turnPage(1);
+                            else turnPage(-1);
+                        });
+                        document.addEventListener('keydown', (e) => {
+                            if (e.key === 'ArrowRight') turnPage(1);
+                            if (e.key === 'ArrowLeft') turnPage(-1);
+                        });
+                        const fullscreenBtn = document.getElementById('fullscreenBtn');
+                        fullscreenBtn.addEventListener('click', () => {
+                            if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+                            else document.exitFullscreen();
+                        });
+
+                        // Başlatma
+                        prepareSpreads();
+                        calculateAndSetAspectRatio(); // Oranı hesapla ve ilk güncellemeyi tetikle
+                    });
+                <\/script>
+            `;
+
+            return `<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><title>${fileNameSpan.textContent}</title>${css}</head><body>${htmlBody}${js}</body></html>`;
+        }
+    </script>
+</body>
+</html>
