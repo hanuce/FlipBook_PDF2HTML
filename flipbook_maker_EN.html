@@ -219,7 +219,7 @@
                             const pageSource = document.documentElement.outerHTML;
                             const blob = new Blob([pageSource], { type: 'text/html' });
                             const url = URL.createObjectURL(blob);
-                            const a = document.createElement('a'); a.href = url; a.download = 'flipbook.html';
+                            const a = document.createElement('a'); a.href = url; a.download = '${fileNameSpan.textContent}.html';
                             document.body.appendChild(a); a.click();
                             document.body.removeChild(a); URL.revokeObjectURL(url);
                         }
