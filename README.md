@@ -1,4 +1,4 @@
-# PDF'den Etkileşimli Flipbook Oluşturucu / Interactive PDF to Flipbook Converter
+# PDF'den Sayfa Geçişi Efektli Flipbook (e-kitap) Oluşturucu / Interactive Page Flip Effected e-Book from PDF to (Flipbook Converter)
 - Tek bir HTML dosyası ile PDF'lerinizi modern, hızlı ve etkileşimli dijital yayınlara dönüştürün.
 - Sunucuya veya karmaşık kütüphanelere gerek yok.
 - Türkçe kullanım için flipbook_maker_TR.html sayfasını indirip kulanabilirsiniz.
