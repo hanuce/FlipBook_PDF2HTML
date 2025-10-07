@@ -41,7 +41,7 @@ This standalone html page is designed to convert standard PDF files into fluid, 
 ---
 1. PDF işlemleri için Apache 2.0 altında lisanslı olan [PDF.JS ](https://mozilla.github.io/pdf.js/) kullanılmıştır.
 2. Bu sebeple internet bağlantısı gerektirir.
-3. HTML etiketlerinde düzenleme yaparak gerekli dosyaları ekelemeniz halinde tamamen internetsiz olarak çalışabilir.
+3. HTML etiketlerinde düzenleme yaparak gerekli dosyaları yerel bilgisayar üzerinden eklemeniz halinde tamamen internetsiz olarak yerel olarak çalışabilir.
 4. Bahsedilen etiketler:
 ```<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>``` and ```pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.worker.min.js'```
 
