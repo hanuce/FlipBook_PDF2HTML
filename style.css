@@ -304,3 +304,46 @@ h1 {
         font-size: 24px;
     }
 }
+
+/* Footer Styles */
+.app-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 -2px 15px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    flex-wrap: wrap;
+}
+
+.footer-text,
+.footer-links a {
+    font-size: 14px;
+    color: #333;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.footer-links a:hover {
+    color: #667eea;
+}
+
+@media (max-width: 768px) {
+    .app-footer {
+        flex-direction: column;
+        gap: 8px;
+        padding: 12px 20px;
+    }
+
+    .footer-text,
+    .footer-links a {
+        font-size: 12px;
+        text-align: center;
+    }
+}
